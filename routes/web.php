@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/colleague', 'ColleagueController@index')->name('colleague.index');
+Route::get('/colleague/edit', function(){
+    return view('colleagues.edit');
+});
