@@ -5,12 +5,13 @@
 		<section class="section">
 			<div class="create-form">
 				<h3>New Colleague</h3>
-				<form action="">
+				<form action="{{route('colleague.store')}}" method="POST">
+					@csrf
 					<div class="form-group">
-						<input type="text" class="form-control" name="title" placeholder="Colleague name">
+						<input type="text" class="form-control" placeholder="Colleague name" name="name">
 					</div>
 					<div class="form-group">
-						<textarea name="" id="" cols="20" rows="3" class="form-control" placeholder="About Colleague"></textarea>
+						<textarea name="body" id="" cols="20" rows="3" class="form-control" placeholder="About Colleague"></textarea>
 					</div>
 					<hr>
 					<div class="form-group">
@@ -18,12 +19,12 @@
 					        <div class="input-group-prepend">
 					          <div class="input-group-text">Friendship Rating</div>
 					        </div>
-					        <select class="form-control" id="exampleFormControlSelect1">
-						      <option>1.0</option>
-						      <option>2.0</option>
-						      <option>3.0</option>
-						      <option>4.0</option>
-						      <option>5.0</option>
+					        <select name="rating" class="form-control" id="exampleFormControlSelect1">
+						      <option value="1.0">1.0</option>
+						      <option value="2.0">2.0</option>
+						      <option value="3.0">3.0</option>
+						      <option value="4.0">4.0</option>
+						      <option value="5.0">5.0</option>
 						    </select>
 					    </div>
 					</div>
@@ -48,7 +49,7 @@
 						<div class="actions">
 							<div class="row">
 								<div class="col text-center">
-									<a href="#" class="edit">Edit</a>
+									<a href="{{route('colleague.edit', $colleague->id)}}" class="edit">Edit</a>
 								</div>
 								<div class="col text-center">
 									<form action="">

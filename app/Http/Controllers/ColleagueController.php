@@ -15,7 +15,7 @@ class ColleagueController extends Controller
     public function index()
     {
         //
-        $colleagues = Colleague::all();
+        $colleagues = Colleague::orderBy('id', 'desc')->get();
 
         return view('colleagues.index', compact("colleagues"));
     }
@@ -39,6 +39,19 @@ class ColleagueController extends Controller
     public function store(Request $request)
     {
         //
+        request()->validate([
+            'name' => 'required',
+            'body' => 'required',
+            'rating' => 'required',
+        ]);
+        $colleague = new Colleague;
+        $colleague->name = request('name');
+        $colleague->body = request('body');
+        $colleague->rating = (float) request('rating');
+        
+        if($colleague->save()){
+            return redirect('/colleague');
+        }
     }
 
     /**
@@ -55,24 +68,41 @@ class ColleagueController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Colleague  $colleague
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Colleague $colleague)
+    public function edit($id)
     {
         //
+        $colleague = Colleague::findOrFail($id);
+
+        return view('colleagues.edit', compact("colleague"));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Colleague  $colleague
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Colleague $colleague)
+    public function update(Request $request, $id)
     {
         //
+        $colleague = Colleague::findOrFail($id);
+
+        request()->validate([
+            'name' => 'required',
+            'body' => 'required',
+            'rating' => 'required',
+        ]);
+        $colleague->name = request('name');
+        $colleague->body = request('body');
+        $colleague->rating = (float) request('rating');
+        
+        if($colleague->save()){
+            return redirect('/colleague');
+        }
     }
 
     /**
