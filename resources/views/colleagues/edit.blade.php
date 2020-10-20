@@ -5,7 +5,7 @@
 		<section class="section">
 			<div class="create-form">
 				<h3>Edit Colleague</h3>
-				<form action="{{ route('colleague.update', $colleague->id )}} method="POST">
+				<form action="{{ route('colleague.update', $colleague->id )}}" method="POST">
 					@csrf
 					@method('PUT')
 					<div class="form-group">

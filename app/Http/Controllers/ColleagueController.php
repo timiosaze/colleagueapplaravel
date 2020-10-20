@@ -108,11 +108,16 @@ class ColleagueController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Colleague  $colleague
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Colleague $colleague)
+    public function destroy($id)
     {
         //
+        $colleague = Colleague::findOrFail($id);
+
+        if($colleague->delete()){
+            return redirect('/colleague');
+        }
     }
 }

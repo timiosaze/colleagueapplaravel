@@ -52,14 +52,35 @@
 									<a href="{{route('colleague.edit', $colleague->id)}}" class="edit">Edit</a>
 								</div>
 								<div class="col text-center">
-									<form action="">
-										<a href="#" class="delete">Delete</a>
-									</form>
+									<a href="#" class="delete" data-toggle="modal" data-target="#exampleModal{{$colleague->id}}">Delete</a>
 								</div>
 							</div>
 						</div>
 					</li>
-
+					<!-- Modal -->
+					<div class="modal fade" id="exampleModal{{$colleague->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Delete Colleague</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+							<div class="modal-body">
+							{{Str::limit($colleague->name, 20)}}
+							</div>
+							<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<form action="{{route('colleague.destroy', $colleague->id)}}" method="POST">
+								@csrf
+								@method('DELETE')
+								<button type="submit" class="btn btn-primary">Delete</button>
+							</form>
+							</div>
+						</div>
+						</div>
+					</div>
 					@empty
 
 					<li class="no-data text-center">
