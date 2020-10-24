@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Colleague;
+use Auth;
 use Illuminate\Http\Request;
 
 class ColleagueController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,7 @@ class ColleagueController extends Controller
     public function index()
     {
         //
-        $colleagues = Colleague::orderBy('id', 'desc')->get();
+        $colleagues = Colleague::where('user_id', Auth::id())->orderBy('id', 'desc')->paginate(7);
 
         return view('colleagues.index', compact("colleagues"));
     }
@@ -39,18 +44,17 @@ class ColleagueController extends Controller
     public function store(Request $request)
     {
         //
-        request()->validate([
-            'name' => 'required',
-            'body' => 'required',
-            'rating' => 'required',
-        ]);
+        $this->formsValidation();
         $colleague = new Colleague;
         $colleague->name = request('name');
         $colleague->body = request('body');
+        $colleague->user_id = Auth::id();
         $colleague->rating = (float) request('rating');
         
         if($colleague->save()){
-            return redirect('/colleague');
+            return redirect('/colleague')->with('success', 'Successfully saved');
+        } else {
+            return redirect('/colleague')->with('failure', 'Not saved');
         }
     }
 
@@ -74,7 +78,7 @@ class ColleagueController extends Controller
     public function edit($id)
     {
         //
-        $colleague = Colleague::findOrFail($id);
+        $colleague = Colleague::where('user_id', Auth::id())->findOrFail($id);
 
         return view('colleagues.edit', compact("colleague"));
     }
@@ -89,19 +93,17 @@ class ColleagueController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $colleague = Colleague::findOrFail($id);
+        $colleague = Colleague::where('user_id', Auth::id())->findOrFail($id);
 
-        request()->validate([
-            'name' => 'required',
-            'body' => 'required',
-            'rating' => 'required',
-        ]);
+        $this->formsValidation();
         $colleague->name = request('name');
         $colleague->body = request('body');
         $colleague->rating = (float) request('rating');
         
         if($colleague->save()){
-            return redirect('/colleague');
+            return redirect('/colleague')->with('success', 'Successfully updated');
+        } else {
+            return redirect('/colleague')->with('failure', 'Not updated');
         }
     }
 
@@ -114,10 +116,19 @@ class ColleagueController extends Controller
     public function destroy($id)
     {
         //
-        $colleague = Colleague::findOrFail($id);
+        $colleague = Colleague::where('user_id', Auth::id())->findOrFail($id);
 
         if($colleague->delete()){
-            return redirect('/colleague');
+            return redirect('/colleague')->with('success', 'Successfully deleted');
+        } else {
+            return redirect('/colleague')->with('failure', 'Not deleted');
         }
+    }
+    public function formsValidation(){
+        return request()->validate([
+            'name' => 'required',
+            'body' => 'required',
+            'rating' => 'required',
+        ]);
     }
 }

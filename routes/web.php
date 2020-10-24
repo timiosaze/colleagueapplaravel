@@ -12,10 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 Route::get('/colleague', 'ColleagueController@index')->name('colleague.index');
 Route::post('/colleague', 'ColleagueController@store')->name('colleague.store');
 Route::get('/colleague/{id}/edit', 'ColleagueController@edit')->name('colleague.edit');
 Route::put('/colleague/{id}', 'ColleagueController@update')->name('colleague.update');
 Route::delete('/colleague/{id}', 'ColleagueController@destroy')->name('colleague.destroy');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -5,13 +5,28 @@
 		<section class="section">
 			<div class="create-form">
 				<h3>New Colleague</h3>
+				@if ($errors->any())
+					<div class="alert alert-danger" role="alert">
+						{{ $errors->first() }}
+					</div>
+				@endif
+				@if (session('success'))
+					<div class="alert alert-success" role="alert">
+						{{session('success')}}
+					</div>
+				@endif
+				@if (session('failure'))
+					<div class="alert alert-danger" role="alert">
+						{{session('failure')}}
+					</div>
+				@endif
 				<form action="{{route('colleague.store')}}" method="POST">
 					@csrf
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Colleague name" name="name">
+						<input type="text" class="form-control" placeholder="Colleague name" name="name" value="{{old('name') ? old('name') : ''}}">
 					</div>
 					<div class="form-group">
-						<textarea name="body" id="" cols="20" rows="3" class="form-control" placeholder="About Colleague"></textarea>
+						<textarea name="body" id="" cols="20" rows="3" class="form-control" placeholder="About Colleague">{{old('body') ? old('body') : ''}}</textarea>
 					</div>
 					<hr>
 					<div class="form-group">
@@ -92,10 +107,7 @@
 			</div>
 		</section>
 		<section class="section">
-			<div class="paginate">
-				<a href="#" class="btn btn-outline-primary">Prev</a>
-				<a href="#" class="btn btn-outline-primary">Next</a>
-			</div>
+			{{$colleagues->links()}}
 		</section>
 	
 @endsection

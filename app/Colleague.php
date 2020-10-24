@@ -11,4 +11,7 @@ class Colleague extends Model
     {
         return number_format($value,1);
     }
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
 }

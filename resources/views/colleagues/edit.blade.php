@@ -5,6 +5,11 @@
 		<section class="section">
 			<div class="create-form">
 				<h3>Edit Colleague</h3>
+				@if ($errors->any())
+					<div class="alert alert-danger">
+						{{ $errors->first() }}
+					</div>
+				@endif
 				<form action="{{ route('colleague.update', $colleague->id )}}" method="POST">
 					@csrf
 					@method('PUT')
